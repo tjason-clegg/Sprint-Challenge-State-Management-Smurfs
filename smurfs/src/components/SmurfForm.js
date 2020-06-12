@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
-import useInput from "./useInput";
+import useInput from "./UseInput";
 import { addSmurf } from "../actions/actions";
 import { connect } from "react-redux";
 
 const SmurfForm = (props) => {
   const { register } = useForm();
-  const [name, setName, handleName] = useInput("");
-  const [age, setAge, handleAge] = useInput("");
-  const [height, setHeight, handleHeight] = useInput("");
+  const [name, handleName] = useInput("");
+  const [age, handleAge] = useInput("");
+  const [height, handleHeight] = useInput("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,6 +17,12 @@ const SmurfForm = (props) => {
       age: Number(age),
       height: height,
     };
+
+    const handleGetData = (e) => {
+      e.preventDefault();
+      props.getData();
+    };
+
     //   console.log(data)
     props.addSmurf(data);
   };
@@ -53,4 +59,10 @@ const SmurfForm = (props) => {
   );
 };
 
-export default connect(() => {}, { addSmurf })(SmurfForm);
+const mapStateToProps = (state) => {
+  return {
+    isFetchingData: state.isFetchingData,
+  };
+};
+
+export default connect(mapStateToProps, { addSmurf })(SmurfForm);

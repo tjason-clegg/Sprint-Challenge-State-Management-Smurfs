@@ -1,18 +1,14 @@
-import React from "react";
-import { ADD_SMURF } from "../actions/actions";
-import axios from "axios";
-
-axios
-  .get("http://localhost:3333/smurfs")
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+import {
+  ADD_SMURF,
+  FETCH_DATA,
+  UPDATE_SMURFS,
+  SET_ERROR,
+} from "../actions/actions";
 
 const initialState = {
   smurfs: [],
+  isFetchingData: false,
+  error: "",
 };
 
 const SmurfReducer = (state = initialState, action) => {
@@ -20,6 +16,25 @@ const SmurfReducer = (state = initialState, action) => {
     case ADD_SMURF:
       return {
         smurfs: action.payload.data,
+      };
+    case FETCH_DATA:
+      return {
+        ...state,
+        isFetchingData: true,
+      };
+
+    case UPDATE_SMURFS:
+      return {
+        ...state,
+        smurfs: action.payload,
+        isFetchingData: false,
+      };
+
+    case SET_ERROR:
+      return {
+        ...state,
+        isFetchingData: false,
+        error: action.payload,
       };
     default:
       return state;
